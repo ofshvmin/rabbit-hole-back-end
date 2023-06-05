@@ -13,6 +13,20 @@ async function create (req, res) {
   }
 }
 
+async function update (req, res) {
+  try {
+    const posting = await Posting.update(
+      req.body,
+      { where: {id: req.params.postingId}, returning: true }
+    )
+    res.status(200).json(posting)
+  } catch (error) {
+    console.log(error)
+    res.status(500).json(error)
+  }
+}
+
 module.exports = {
   create,
+  update,
 }
