@@ -9,7 +9,6 @@ async function create (req, res) {
   } catch (error) {
     console.log(error)
     res.status(500).json(error)
-    
   }
 }
 
@@ -26,7 +25,19 @@ async function update (req, res) {
   }
 }
 
+async function deletePosting (req, res) {
+  try {
+    const posting = await Posting.findByPk(req.params.postingId)
+    await posting.destroy()
+    res.status(200).json(posting)
+  } catch (error) {
+    console.log(error)
+    res.status(500).json(error)
+  }
+}
+
 module.exports = {
   create,
   update,
+  delete: deletePosting
 }
