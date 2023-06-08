@@ -1,4 +1,19 @@
-const { Posting } = require('../models')
+const { Posting, Profile } = require('../models')
+
+
+async function index (req, res) {
+  try {
+    const postings = await Posting.findAll({
+      // include: [{ model: Like, as: "likesReceived" }]
+      include: { model: Profile}
+
+    })
+    res.status(200).json(postings)
+  } catch (error) {
+    console.log(error)
+    res.status(500).json(error)
+  }
+}
 
 async function create (req, res) {
   try {
@@ -37,6 +52,7 @@ async function deletePosting (req, res) {
 }
 
 module.exports = {
+  index,
   create,
   update,
   delete: deletePosting

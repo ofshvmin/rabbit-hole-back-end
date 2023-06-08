@@ -12,8 +12,8 @@ module.exports = (sequelize, DataTypes) => {
       Profile.belongsTo(models.User, { foreignKey: 'userId' })
 
       Profile.hasMany(models.Posting, {
-        as: 'postingsMade',
-        foreignKey: 'creatorId'
+        foreignKey: 'creatorId',
+        as: 'postingsMade'
       })
     }
   }
