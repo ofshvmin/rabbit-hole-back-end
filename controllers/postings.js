@@ -5,7 +5,7 @@ async function index (req, res) {
   try {
     const postings = await Posting.findAll({
       // include: [{ model: Like, as: "likesReceived" }]
-      include: { model: Profile}
+      include: { model: Profile, as: 'profile'}
 
     })
     res.status(200).json(postings)
