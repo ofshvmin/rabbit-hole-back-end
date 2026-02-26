@@ -9,6 +9,8 @@ const formData = require('express-form-data')
 const profilesRouter = require('./routes/profiles.js')
 const authRouter = require('./routes/auth.js')
 const postingsRouter = require('./routes/postings.js')
+const engagementRouter = require('./routes/engagement.js')
+const feedRouter = require('./routes/feed.js')
 
 // create the express app
 const app = express()
@@ -23,6 +25,8 @@ app.use(formData.parse())
 app.use('/api/profiles', profilesRouter)
 app.use('/api/auth', authRouter)
 app.use('/api/postings', postingsRouter)
+app.use('/api/engagement', engagementRouter)
+app.use('/api/feed', feedRouter)
 
 // handle 404 errors
 app.use(function (req, res, next) {

@@ -4,9 +4,9 @@ const { Posting, Profile } = require('../models')
 async function index (req, res) {
   try {
     const postings = await Posting.findAll({
-      // include: [{ model: Like, as: "likesReceived" }]
-      include: { model: Profile, as: 'profile'}
-
+      where: { creatorId: req.user.profile.id },
+      include: { model: Profile, as: 'profile' },
+      order: [['createdAt', 'DESC']],
     })
     res.status(200).json(postings)
   } catch (error) {

@@ -7,6 +7,9 @@ const { decodeUserFromToken, checkAuth } = middleware
 /*---------- Public Routes ----------*/
 router.post('/signup', authCtrl.signup)
 router.post('/login', authCtrl.login)
+router.post('/google', authCtrl.googleAuth)
+router.post('/apple', authCtrl.appleAuth)
+router.post('/facebook', authCtrl.facebookAuth)
 
 /*---------- Protected Routes ----------*/
 router.use(decodeUserFromToken)

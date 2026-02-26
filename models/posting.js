@@ -1,43 +1,49 @@
-'use strict';
-const {
-  Model
-} = require('sequelize');
+'use strict'
+const { Model } = require('sequelize')
+
 module.exports = (sequelize, DataTypes) => {
   class Posting extends Model {
-    /**
-     * Helper method for defining associations.
-     * This method is not a part of Sequelize lifecycle.
-     * The `models/index` file will call this method automatically.
-     */
     static associate(models) {
-      // define association here
-      Posting.belongsTo(models.Profile, {
-        foreignKey: 'creatorId',
-        as: 'profile'
-      })
+      Posting.belongsTo(models.Profile, { foreignKey: 'creatorId', as: 'profile' })
+      Posting.hasMany(models.Like, { foreignKey: 'postingId', as: 'likes' })
+      Posting.hasMany(models.Comment, { foreignKey: 'postingId', as: 'comments' })
+      Posting.hasMany(models.WatchEvent, { foreignKey: 'postingId', as: 'watchEvents' })
     }
   }
+
   Posting.init({
     creatorId: {
       type: DataTypes.INTEGER,
       allowNull: false,
       onDelete: 'CASCADE',
-      references: {
-        model: 'Profiles',
-        key: 'id',
-      },
-},
+      references: { model: 'Profiles', key: 'id' },
+    },
     numOfLikes: {
       type: DataTypes.INTEGER,
     },
-
     text: {
       type: DataTypes.STRING,
-},
-    type: DataTypes.STRING
+    },
+    type: {
+      type: DataTypes.STRING,
+    },
+    mediaUrl: {
+      type: DataTypes.STRING,
+    },
+    thumbnailUrl: {
+      type: DataTypes.STRING,
+    },
+    durationSec: {
+      type: DataTypes.INTEGER,
+    },
+    tags: {
+      type: DataTypes.ARRAY(DataTypes.TEXT),
+      defaultValue: [],
+    },
   }, {
     sequelize,
     modelName: 'Posting',
-  });
-  return Posting;
-};
+  })
+
+  return Posting
+}

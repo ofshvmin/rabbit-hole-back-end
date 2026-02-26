@@ -16,6 +16,7 @@ module.exports = (sequelize, DataTypes) => {
     }
 
     async comparePassword(tryPassword) {
+      if (!this.dataValues.password) return false
       return await bcrypt.compare(tryPassword, this.dataValues.password)
     }
   }
@@ -42,10 +43,19 @@ module.exports = (sequelize, DataTypes) => {
     },
     password: {
       type: DataTypes.STRING,
-      allowNull: false,
+      allowNull: true,
       get() {
         return () => this.getDataValue('password')
       },
+    },
+    provider: {
+      type: DataTypes.STRING,
+      allowNull: false,
+      defaultValue: 'local',
+    },
+    providerId: {
+      type: DataTypes.STRING,
+      allowNull: true,
     },
   },
   {
@@ -55,6 +65,7 @@ module.exports = (sequelize, DataTypes) => {
 
   User.beforeSave(async (user, options) => {
     if (!user.changed('password')) return
+    if (!user.dataValues.password) return
 
     try {
       const hash = await bcrypt.hash(user.dataValues.password, saltRounds)

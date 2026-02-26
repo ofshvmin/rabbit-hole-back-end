@@ -3,18 +3,28 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "start": "node ./bin/www.js"
+    "start": "node ./bin/www.js",
+    "db:migrate": "sequelize-cli db:migrate",
+    "db:migrate:undo:all": "sequelize-cli db:migrate:undo:all",
+    "db:reset": "npm run db:migrate:undo:all && npm run db:migrate",
+    "seed": "node scripts/seed.js"
+  },
+  "overrides": {
+    "minimatch": "^9.0.9"
   },
   "dependencies": {
-    "bcrypt": "^5.1.0",
-    "cloudinary": "^1.37.0",
+    "apple-signin-auth": "^2.0.0",
+    "bcrypt": "^6.0.0",
+    "cloudinary": "^2.9.0",
     "cors": "^2.8.5",
     "dotenv": "^16.0.3",
     "express": "^4.18.2",
-    "express-form-data": "^2.0.22",
+    "express-form-data": "^3.0.1",
+    "google-auth-library": "^10.6.1",
     "jsonwebtoken": "^9.0.0",
     "morgan": "^1.10.0",
     "pg": "^8.11.0",
-    "sequelize": "^6.31.1"
+    "sequelize": "^6.37.7",
+    "sequelize-cli": "^6.6.2"
   }
 }
