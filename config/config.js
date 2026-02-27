@@ -1,7 +1,7 @@
 require('dotenv').config()
 
 const isFly = !!process.env.FLY_APP_NAME
-const options = isFly ? {} : { ssl: { rejectUnauthorized: false, require: true } }
+const options = isFly ? { ssl: { rejectUnauthorized: false, require: true } } : {}
 
 module.exports = {
   development: {
