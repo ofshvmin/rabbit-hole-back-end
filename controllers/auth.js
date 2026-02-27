@@ -181,7 +181,7 @@ async function oauthFindOrCreate({ provider, providerId, email, name }) {
       { transaction: t, hooks: false }
     )
     const newProfile = await Profile.create(
-      { userId: newUser.id },
+      { userId: newUser.id, name },
       { transaction: t }
     )
     newUser.dataValues.profile = { id: newProfile.id }
