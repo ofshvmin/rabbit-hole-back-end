@@ -53,10 +53,13 @@ async function login(req, res) {
 
 async function changePassword(req, res) {
   try {
-    const user = await User.findByPk(req.user.id)
+    const user = await User.findOne({
+      where: { id: req.user.id },
+      include: { model: Profile, as: 'profile', attributes: ['id'] },
+    })
     if (!user) throw new Error('User not found')
 
-    const isMatch = user.comparePassword(req.body.curPassword)
+    const isMatch = await user.comparePassword(req.body.curPassword)
     if (!isMatch) throw new Error('Incorrect password')
 
     user.password = req.body.newPassword
@@ -108,17 +111,15 @@ async function googleAuth(req, res) {
 
 async function appleAuth(req, res) {
   try {
-    const { identityToken, fullName } = req.body
-    if (!identityToken) return res.status(400).json({ err: 'identityToken required' })
+    const { idToken } = req.body
+    if (!idToken) return res.status(400).json({ err: 'idToken required' })
 
-    const payload = await appleSignin.verifyIdToken(identityToken, {
+    const payload = await appleSignin.verifyIdToken(idToken, {
       audience: process.env.APPLE_CLIENT_ID,
       ignoreExpiration: false,
     })
     const { sub: providerId, email } = payload
-    const name = fullName
-      ? [fullName.givenName, fullName.familyName].filter(Boolean).join(' ')
-      : email
+    const name = email
 
     const user = await oauthFindOrCreate({ provider: 'apple', providerId, email, name })
     const token = createJWT(user)
